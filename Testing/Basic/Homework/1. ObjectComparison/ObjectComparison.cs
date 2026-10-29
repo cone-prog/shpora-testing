@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using FluentAssertions;
+﻿using FluentAssertions;
 using FluentAssertions.Equivalency;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
@@ -21,13 +20,10 @@ public class ObjectComparison
         
         // Этот вариант лучше по следующим причинам:
         // - Теперь нет зависимости от кол-во полей: BeEquivalentTo - сравнивает все поля объекта(в другом тесте
-        // приходится добавлять поля в методе AreEqual(). Также исключили сранение Id на всех уровнях сложности.
-        // - Также мы теперь не зависим от вложенности (насколько далеко по полю parent мы можем пройти), и к тому же
-        // AllowingInfiniteRecursion() убирает ограничение глубины рекурсии.
-        // - Еще мы видим какие именно поля разные
+        // приходится добавлять поля в методе AreEqual()
+        // - Мы видим какие именно поля разные
         actualTsar.Should().BeEquivalentTo(expectedTsar, options =>
-            options.AllowingInfiniteRecursion()
-                   .Excluding((IMemberInfo p) => p.Name == "Id"));
+            options.Excluding((IMemberInfo m) => m.Name == nameof(Person.Id)));
         
         // ClassicAssert.AreEqual(actualTsar.Name, expectedTsar.Name);
         // ClassicAssert.AreEqual(actualTsar.Age, expectedTsar.Age);
